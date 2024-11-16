@@ -115,9 +115,9 @@ def get_dataapi_data(username: str, password: str, count: int) -> dict:
         'Accept': 'application/json',
         'Authorization': get_auth_header(username, password)
     }
-    
+
+    logger.debug(f"Requesting information for n={count} users.")
     response = requests.get(endpoint, headers=headers)
-    logger.debug("Response from https://random-data-api.com/: " + str(response.json()))
     if response.ok:
         logger.debug("Response OK")
         return response.json()
@@ -126,12 +126,12 @@ def get_dataapi_data(username: str, password: str, count: int) -> dict:
 
 
 def parse_response(response):
-    logger.debug("Parsing response from https://random-data-api.com/")
+    logger.debug("Parsing response from https://random-data-api.com/ ...")
     users_data = []
     for user_data in response:
         user = User.from_dict(user_data)
         users_data.append(user.to_list())
-
+    logger.debug(users_data)
     return users_data
 
 
@@ -145,16 +145,18 @@ def list_users_by_state(listed_user_data):
     for user in listed_user_data:
         state = user[3]
         users_by_state[state].append(user)
-    logger.debug("Listed users by state: " + str(users_by_state))
+    logger.debug("Users listed by state: ")
+    logger.debug(users_by_state)
 
     return users_by_state
 
 
 def save_users_by_state(listed_users_by_state, output_dir):
+    logger.debug("Saving users by state in /output ...")
     for state, users in listed_users_by_state.items():
-        logger.debug(users)
         full_names = [f"{user[0]} {user[1]}" for user in users]
         Path(output_dir / f"{state}.txt").write_text('\n'.join(full_names))
+    logger.debug("DONE.")
 
 
 def main(args: List) -> None:

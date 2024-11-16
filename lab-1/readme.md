@@ -12,11 +12,6 @@ Jane Doe
 Michael Smith
 ```
 
-## Use
-
-The script has to be executed with:
-
-```python retrieve_names.py [options] ```
 
 ## Installation
 
@@ -29,7 +24,7 @@ pip install -r requirements.txt
 ### Basic syntax
 
 ```bash
-python script.py [opciones]
+python script.py [options]
 ```
 
 ### Optional arguments
